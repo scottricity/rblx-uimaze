@@ -10,11 +10,11 @@ local GuiCollisionService = require(Replicated.GuiCollisionService)
 local WaitFor = require(Replicated.WaitFor)
 
 -- < Styles/Components Import >
---[[
-    At the moment, this is not used. It's meant to hold bigger and more complex components (size wise).
-]]
 local StylesImport = PlayerGui:WaitForChild("Styles")
 local Styles = require(StylesImport)
+local Components = Styles.Components
+
+Styles:LoadComponents(StylesImport) -- Load the components to prevent recursive require
 
 -- < Fusion Functions >
 local New = Fusion.New
@@ -37,6 +37,10 @@ local OnChange = Fusion.OnChange
 local Out = Fusion.Out
 local Ref = Fusion.Ref
 
+-- < Main Refs >
+local _Player = Value() -- This is the cursor/player UI instance, to use globally in this script
+local _Main = Value()
+
 -- < Main Program >
 local Client = Players.LocalPlayer
 Replicated:WaitForChild("_Loaded").Event:Wait() -- Wait for the event named "_Loaded" in ReplicatedFirst to fire, telling us we can start creating UIs
@@ -54,7 +58,6 @@ end)
 -- < Player Properties >
 local PlayerPosition = Observer(MousePosition) -- Observe the client's mouse and fire when it changes
 local IsAlive = Value(true) 
-local _Player = Value() -- This is the cursor/player UI instance, to use globally in this script
 
 -- < Player Component (cursor) >
 local function Player(props)
@@ -93,6 +96,7 @@ end
 
 -- < Game >
 local Main: ScreenGui= New "ScreenGui" {
+    [Ref] = _Main;
     Name = "Main";
     Parent = PlayerGui;
     IgnoreGuiInset = true;
@@ -104,6 +108,12 @@ local Main: ScreenGui= New "ScreenGui" {
             BackgroundTransparency = 1;
             [Children] = {
                 Player {};
+                Components.TestButton {
+                    OnClick = function()
+                        print("e")
+                    end;
+                    Disabled = Value(false)
+                };
             }
         };
     };

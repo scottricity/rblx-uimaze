@@ -24,6 +24,17 @@ local Ref = Fusion.Ref
 
 -- < Export >
 local styles = {}
+export type Props = {[any]: any}
 styles.Baseline = Fusion
+
+styles.Components = {}
+
+function styles:LoadComponents(dir: Instance)
+    for _, Import in dir:GetChildren() do
+        if Import:IsA("ModuleScript") and Import.Name ~= script.Name then
+            styles.Components[Import.Name] = require(Import)
+        end
+    end
+end
 
 return styles
