@@ -1,0 +1,17 @@
+{
+  "name": "rblx-uimaze",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedFirst": {
+      "$path": "src/first"
+    },
+
+    "ReplicatedStorage": {
+      "$path": "src/shared"
+    },
+    "StarterGui": {
+      "$path": "src/client"
+    }
+  }
+}
