@@ -10,6 +10,9 @@ local GuiCollisionService = require(Replicated.GuiCollisionService)
 local WaitFor = require(Replicated.WaitFor)
 
 -- < Styles/Components Import >
+--[[
+    At the moment, this is not used. It's meant to hold bigger and more complex components (size wise).
+]]
 local StylesImport = PlayerGui:WaitForChild("Styles")
 local Styles = require(StylesImport)
 
@@ -36,7 +39,7 @@ local Ref = Fusion.Ref
 
 -- < Main Program >
 local Client = Players.LocalPlayer
-Replicated:WaitForChild("_Loaded").Event:Wait()
+Replicated:WaitForChild("_Loaded").Event:Wait() -- Wait for the event named "_Loaded" in ReplicatedFirst to fire, telling us we can start creating UIs
 
 -- < Client Mouse Method >
 local Mouse = Client:GetMouse()
@@ -45,13 +48,13 @@ local MousePosition = Value(UDim2.new(0,mX,0,mY))
 Mouse.Move:Connect(function()
     mX = Mouse.X
     mY = Mouse.Y
-    MousePosition:set({mX, mY})
+    MousePosition:set({mX, mY}) -- This is not used directly, it's a hacky way to send an event to Fusion's event objects
 end)
 
 -- < Player Properties >
-local PlayerPosition = Observer(MousePosition)
-local IsAlive = Value(true)
-local _Player = Value()
+local PlayerPosition = Observer(MousePosition) -- Observe the client's mouse and fire when it changes
+local IsAlive = Value(true) 
+local _Player = Value() -- This is the cursor/player UI instance, to use globally in this script
 
 -- < Player Component (cursor) >
 local function Player(props)
